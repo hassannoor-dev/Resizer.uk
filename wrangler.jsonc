@@ -1,6 +1,6 @@
 {
   // TIP: this MUST match your Worker's name in the Cloudflare dashboard (Workers & Pages list). Copy it exactly.
-  "name": "YOUR-WORKER-NAME",
+    "name": "resizer-uk",
   "main": "worker/index.js",
   "compatibility_date": "2026-11-21",
   "assets": {
