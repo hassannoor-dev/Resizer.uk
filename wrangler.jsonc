@@ -3,6 +3,8 @@
     "name": "resizer-uk",
   "main": "worker/index.js",
   "compatibility_date": "2026-11-21",
+  // TIP: the URL is not secret, so it can live here. NEVER put the secret key in this file.
+  "vars": { "SUPABASE_URL": "https://ljyglfwgwylfemyyxxhl.supabase.co" },
   "assets": {
     "directory": "./dist",
     "not_found_handling": "single-page-application",
