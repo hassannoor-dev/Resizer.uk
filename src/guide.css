@@ -1,0 +1,124 @@
+/* ===== Guide popup: black, white and yellow, like the Guide badge ===== */
+/* TIP: --gd-ink is the black used everywhere in the book. Change it once to retune. */
+.gd-backdrop { --gd-ink: #111216; position: fixed; inset: 0; z-index: 52; display: grid; place-items: center; padding: 16px; background: rgba(5, 5, 7, 0.74); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); overflow: auto; animation: gd-fade 0.25s ease; }
+@keyframes gd-fade { from { opacity: 0; } }
+.gd { position: relative; display: grid; gap: 14px; width: min(780px, 100%); max-height: 100%; overflow: auto; padding: 22px; border-radius: 28px; color: #fff; background: radial-gradient(ellipse 80% 45% at 50% 0%, #2a2b31, #0d0e11 75%); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55); animation: gd-pop 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.1); }
+@keyframes gd-pop { from { opacity: 0; transform: translateY(18px) scale(0.97); } }
+.gd-close { position: absolute; top: 16px; right: 16px; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 255, 255, 0.1); color: #fff; }
+.gd-close:hover { background: rgba(255, 255, 255, 0.2); }
+.gd-head { display: flex; align-items: center; gap: 12px; padding-right: 48px; font-size: 28px; }
+.gd-head h3 { font-size: 18px; line-height: 1.2; }
+.gd-head p { font-size: 13px; color: rgba(255, 255, 255, 0.6); }
+
+/* The dark table the book sits on, with a soft yellow glow underneath. Drag here to move the book. */
+.gd-stage {
+  --rx: 0deg; --ry: 0deg;
+  position: relative; overflow: hidden; border-radius: 20px;
+  cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 105%, rgba(251, 191, 36, 0.18), transparent 70%),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0 2px, transparent 2px 14px),
+    #08080b;
+}
+.gd-stage.is-drag { cursor: grabbing; }
+
+/* Hint + position dots (they only show where you are, you control the book by dragging) */
+.gd-hint { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; color: rgba(255, 255, 255, 0.6); text-align: center; }
+.gd-hint svg { flex: none; color: var(--yellow); }
+.hint-touch { display: none; }
+@media (pointer: coarse) { .hint-mouse { display: none; } .hint-touch { display: inline; } }
+.gd-dots { display: flex; justify-content: center; gap: 6px; }
+.gd-dots i { width: 7px; height: 7px; border-radius: 999px; background: rgba(255, 255, 255, 0.25); transition: width 0.3s ease, background 0.3s ease; }
+.gd-dots i.on { width: 22px; background: var(--yellow); }
+.gd .btn.ai { width: 100%; }
+
+/* ===== The book ===== */
+.bk-scale { position: absolute; left: 50%; top: 50%; perspective: 1500px; }
+.bk-intro, .bk-float, .bk-tilt, .bk { width: 100%; height: 100%; transform-style: preserve-3d; }
+/* TIP: the spin-in when the popup opens. Change 1.2s to make it slower or faster. */
+.bk-intro { animation: bk-in 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+@keyframes bk-in { from { transform: rotateY(-160deg) translateY(30px) scale(0.8); } to { transform: none; } }
+.bk-float { animation: bk-float 5s ease-in-out infinite; }
+@keyframes bk-float { 50% { transform: translateY(-7px); } }
+.bk-tilt { transform: rotateX(var(--ry)) rotateY(var(--rx)); transition: transform 0.25s ease-out; }
+
+/* TIP: 0.85s = how long the pages take to settle after you let go. While you drag there is no delay at all. */
+.bk, .bk-leaf { transition: transform 0.85s cubic-bezier(0.25, 0.8, 0.25, 1), transform-origin 0.85s cubic-bezier(0.25, 0.8, 0.25, 1); }
+.bk-scale.is-drag .bk, .bk-scale.is-drag .bk-leaf { transition: none; }
+.bk { position: relative; }
+/* every page is a leaf that hinges on the spine (its left edge) */
+.bk-leaf { position: absolute; inset: 0; transform-style: preserve-3d; transform-origin: left center; }
+
+/* ===== Faces ===== */
+.bk-face { position: absolute; inset: 0; overflow: hidden; border-radius: 3px 12px 12px 3px; backface-visibility: hidden; -webkit-backface-visibility: hidden; font-family: 'DM Sans', system-ui, sans-serif; color: var(--gd-ink); box-shadow: inset 8px 0 10px -6px rgba(0, 0, 0, 0.28), 0 18px 34px -12px rgba(0, 0, 0, 0.7); }
+.bk-back, .bk-inside-left, .bk-inside-back { transform: rotateY(180deg); }
+
+/* ----- Cover: minimal, off-white, one yellow accent ----- */
+.bk-front {
+  display: flex; flex-direction: column; align-items: center; padding: 30px 22px 32px 28px; text-align: center;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.75), transparent 45%), #f1efea;
+}
+.bk-front::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: linear-gradient(90deg, #dba400, var(--yellow) 65%); }
+.bk-mark { font-size: 10px; font-weight: 700; letter-spacing: 0.34em; text-indent: 0.34em; text-transform: uppercase; }
+.bk-art-box { flex: 1; display: grid; place-items: center; width: 100%; padding: 6px 6px 10px 0; }
+.bk-size { font-family: 'Archivo Narrow', 'DM Sans', sans-serif; font-size: 34px; font-weight: 600; line-height: 1; letter-spacing: -0.01em; }
+.bk-size em { margin: 0 0.1em; font-style: normal; font-weight: 400; opacity: 0.4; }
+.bk-name { margin-top: 11px; font-size: 9px; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; color: #5b5e66; }
+.bk-name span { margin: 0 0.6em; color: #b7bac2; }
+
+/* Line drawing of the format */
+.bk-art { position: relative; display: grid; place-items: center; overflow: hidden; border: 1.5px solid var(--gd-ink); border-radius: 8px; background: #fff; color: var(--gd-ink); font-size: 20px; box-shadow: 6px 6px 0 var(--yellow); }
+.bk-art-circle { display: grid; place-items: center; height: 70%; aspect-ratio: 1; border: 1.5px solid var(--gd-ink); border-radius: 50%; font-size: 18px; }
+.bk-art-dot { position: absolute; left: 7%; bottom: -28%; height: 85%; aspect-ratio: 1; border: 1.5px solid var(--gd-ink); border-radius: 50%; }
+.bk-art-play { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--gd-ink); color: #fff; font-size: 11px; }
+.bk-art-bars { position: absolute; top: 8px; left: 10%; right: 10%; display: flex; gap: 4px; }
+.bk-art-bars i { flex: 1; height: 3px; border-radius: 2px; background: var(--gd-ink); opacity: 0.3; }
+.bk-art-bars i:first-child { opacity: 1; }
+
+/* ----- Inside pages ----- */
+.bk-page { padding: 18px 16px 30px; background: linear-gradient(#fff, #f6f6f4); box-shadow: inset 8px 0 10px -6px rgba(0, 0, 0, 0.22), 0 18px 34px -12px rgba(0, 0, 0, 0.7); }
+/* TIP: the stack of page edges only goes on pages that face forward, so no white peeks out from behind the back cover */
+.bk-inside-right, .bk-inside-more { box-shadow: inset 8px 0 10px -6px rgba(0, 0, 0, 0.22), 3px 2px 0 #ecebe7, 6px 4px 0 #dddbd5, 0 18px 34px -12px rgba(0, 0, 0, 0.7); }
+.bk-bar { margin: 0 0 7px; padding: 4px 8px; border-radius: 4px; background: var(--gd-ink); color: #fff; font-size: 10px; font-weight: 700; line-height: 1.2; letter-spacing: 0.1em; text-transform: uppercase; }
+.bk-bar.warn { background: #fff; color: var(--gd-ink); box-shadow: inset 0 0 0 1.5px var(--gd-ink); }
+.bk-bar.tip { background: var(--yellow); color: var(--gd-ink); }
+.bk-page p { margin: 0 0 13px; font-size: 12px; line-height: 1.4; }
+.bk-hook { margin: 2px 0 14px !important; font-size: 14px !important; font-weight: 700; font-style: italic; line-height: 1.3 !important; }
+.bk-tips { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.bk-tips li { display: flex; gap: 8px; font-size: 12px; line-height: 1.38; }
+.bk-tips b { flex: none; display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--yellow); color: var(--gd-ink); font-size: 10px; }
+.bk-specs { display: grid; gap: 3px; margin: 0; font-size: 12px; }
+.bk-specs div { display: flex; justify-content: space-between; padding: 3px 0; border-bottom: 1px dashed #cfd0d4; }
+.bk-specs dt { color: #5c606a; }
+.bk-specs dd { margin: 0; font-weight: 700; }
+.bk-num { position: absolute; bottom: 9px; left: 0; right: 0; text-align: center; font-size: 10px; font-weight: 700; color: #9a9da6; }
+
+/* Page 4: checklist */
+.bk-check { display: grid; gap: 11px; margin: 0; padding: 0; list-style: none; }
+.bk-check li { display: flex; align-items: center; gap: 9px; font-size: 12px; line-height: 1.3; }
+.bk-check li::before { content: '✓'; flex: none; display: grid; place-items: center; width: 17px; height: 17px; border-radius: 5px; background: var(--yellow); color: var(--gd-ink); font-size: 10px; font-weight: 800; }
+
+/* Page 5: other sizes + free note */
+.bk-more { display: grid; margin: 0 0 14px; padding: 0; list-style: none; }
+.bk-more li { display: flex; justify-content: space-between; gap: 8px; padding: 8px 0; border-bottom: 1px dashed #cfd0d4; font-size: 12px; }
+.bk-more b { flex: none; }
+.bk-free { color: #5c606a; font-size: 11px !important; }
+
+/* ----- Back cover: matte black, fine yellow frame ----- */
+.bk-back {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 24px 24px 50px; text-align: center; color: #fff;
+  background: radial-gradient(ellipse 90% 55% at 50% 0%, rgba(255, 255, 255, 0.08), transparent 65%), #0d0e11;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07), inset 8px 0 10px -6px rgba(0, 0, 0, 0.6), 0 18px 34px -12px rgba(0, 0, 0, 0.7);
+}
+.bk-frame { position: absolute; inset: 12px; border: 1px solid rgba(251, 191, 36, 0.45); border-radius: 2px 8px 8px 2px; pointer-events: none; }
+.bk-back strong { font-family: 'Archivo Narrow', 'DM Sans', sans-serif; font-size: 38px; font-weight: 700; line-height: 1; letter-spacing: 0.01em; }
+.bk-rule { width: 28px; height: 2px; margin: 16px 0 14px; background: var(--yellow); }
+.bk-back small { font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255, 255, 255, 0.5); }
+.bk-back a { margin-top: 4px; font-size: 14px; font-weight: 700; color: #fff; text-decoration: underline; text-decoration-color: rgba(251, 191, 36, 0.7); text-underline-offset: 4px; transition: color 0.2s; }
+.bk-back a:hover { color: var(--yellow); }
+/* small barcode detail */
+.bk-bars { position: absolute; left: 50%; bottom: 28px; width: 64px; height: 16px; transform: translateX(-50%); background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.45) 0 1px, transparent 1px 3px, rgba(255, 255, 255, 0.45) 3px 5px, transparent 5px 6px); }
+
+@media (max-width: 600px) {
+  .gd { padding: 16px; border-radius: 24px; }
+}

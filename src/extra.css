@@ -7,9 +7,14 @@
 .ed-head h3 { font-size: 20px; }
 .ed-head p { font-size: 14px; color: var(--muted); }
 .ed-body { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 20px; }
-.ed-stage { display: grid; place-items: center; min-height: 320px; padding: 16px; border-radius: 20px; background: #fff; }
+/* TIP: a pale blue-grey "workbench" with a faint dot grid. It stands out from a white photo AND a dark one, so you see the true edges of the image. Change #d6e0f0 to retune it. */
+.ed-stage { display: grid; place-items: center; min-height: 320px; padding: 16px; border-radius: 20px; background: radial-gradient(circle at 1px 1px, rgba(15, 27, 51, 0.14) 1px, transparent 0) 0 0 / 18px 18px, #d6e0f0; box-shadow: inset 0 2px 10px rgba(15, 27, 51, 0.12); }
 .ed-stage canvas { max-width: 100%; max-height: 60vh; border-radius: 8px; box-shadow: 0 8px 24px rgba(15, 27, 51, 0.2); cursor: grab; touch-action: none; }
+.ed-stage canvas { outline: 1px solid rgba(15, 27, 51, 0.35); } /* TIP: a thin line around the image so its exact size is clear */
+.ed-stage .drop { border-color: #8fa4cc; color: #3d4c6b; }
+.ed-stage .drop strong { color: var(--navy); }
 .drop { display: grid; gap: 6px; place-items: center; width: 100%; min-height: 300px; border: 2px dashed #b9c6e6; border-radius: 16px; color: var(--muted); text-align: center; cursor: pointer; }
+
 .drop svg { font-size: 36px; color: var(--blue); }
 .drop strong { color: var(--navy); }
 .drop:focus-within, .btn:focus-within { outline: 3px solid var(--blue); outline-offset: 3px; }
@@ -43,7 +48,7 @@
 }
 
 /* ===== Editor popup on phones: full-screen sheet, preview pinned, controls scroll underneath ===== */
-@media (max-width: 600px) {
+@media (max-width: 800px) {
   /* 1. Popup fills the screen. TIP: change border-radius to 0 for a fully square sheet. */
   .ed-backdrop { padding: 0; place-items: stretch; overflow: hidden; }
   .ed {
@@ -88,3 +93,54 @@
   .ed-controls .hint { order: 9; }
   .ed-controls .btn.ghost, .ed-controls .btn.ai { order: 11; padding: 12px 16px; }
 }
+
+/* ===== Footer: Platforms + Company together in the centre. The logo and tagline are NOT moved. ===== */
+.footer {
+  /* ---------- CONTROLS: desktop. Change these numbers to move things. ---------- */
+  --ft-gap: 72px;  /* TIP: space between the Platforms and Company columns */
+  --ft-x: 400px;     /* TIP: moves BOTH lists. Positive = right, negative = left. Example: 40px or -40px */
+  --ft-y: 0px;     /* TIP: moves BOTH lists. Positive = down, negative = up */
+  --plat-x: 0px;   /* TIP: moves ONLY Platforms */
+  --plat-y: 0px;
+  --comp-x: 0px;   /* TIP: moves ONLY Company */
+  --comp-y: 0px;
+}
+
+/* TIP: layout = [logo column] [Platforms] [Company] [empty column]. The two end columns are equal, so the two lists sit in the middle. */
+.footer-top { display: grid; grid-template-columns: 1fr auto auto 1fr; column-gap: var(--ft-gap); align-items: start; }
+
+/* the controls above move the lists (this does not push anything else around) */
+.footer .footer-top nav[aria-label='Platforms'] { translate: calc(var(--ft-x) + var(--plat-x)) calc(var(--ft-y) + var(--plat-y)); }
+.footer .footer-top nav[aria-label='Company'] { translate: calc(var(--ft-x) + var(--comp-x)) calc(var(--ft-y) + var(--comp-y)); }
+
+/* TIP: comfortable links. Every link has the same left edge (the Platforms buttons used to be indented) and a bigger tap area. */
+.footer .footer-top nav { gap: 0px; }
+.footer .footer-top nav h4 { margin-bottom: 10px; font-size: 16px; }
+.footer .footer-top nav a, .footer .footer-top nav button { padding: 6px 0; font-size: 15px; line-height: 1.3; text-align: left; }
+
+@media (max-width: 900px) {
+  .footer {
+    /* ---------- CONTROLS: phones and tablets. Same names, same meaning. ---------- */
+    --ft-gap: 48px;  /* TIP: space between Platforms and Company on phones */
+    --ft-x: -60px;
+    --ft-y: 0px;
+    --plat-x: 0px;
+    --plat-y: 0px;
+    --comp-x: 0px;
+    --comp-y: 0px;
+  }
+  /* TIP: the logo and tagline get their own row on top, at their normal position. The two lists sit under them, centred. */
+  .footer-top { row-gap: 28px; }
+  .footer-top > div:first-child { grid-column: 1 / -1; }
+  .footer .footer-top nav[aria-label='Platforms'] { grid-column: 2; }
+  .footer .footer-top nav[aria-label='Company'] { grid-column: 3; }
+  .footer .footer-top nav a, .footer .footer-top nav button { padding: 5px 0; font-size: 16px; } /* TIP: bigger tap area on touch screens */
+}
+
+/* TIP: removes "Your photos stay on your device." on phones only. Change 700 to 600 or 900 to match your phone breakpoint. */
+@media (max-width: 700px) {
+  .footer-bottom span:last-child { display: none; }
+}
+
+.ed-tips h4 { font-size: 13px; color: var(--muted); }
+.ed-tips ul { margin: 6px 0 0; padding-left: 18px; font-size: 14px; line-height: 1.5; color: var(--navy); }

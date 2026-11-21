@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { FaXmark, FaDownload, FaImage, FaWandMagicSparkles } from 'react-icons/fa6'
 import { render, layout, clamp, download } from '../utils/resizeImage'
+import { guides, fallbackGuide } from '../data/guides'
 
 const FILLS = [
   { id: 'blur', label: 'Blur' },
@@ -11,6 +12,7 @@ const FILLS = [
 
 export default function Editor({ target, onClose, onPro }) {
   const { pf, s } = target
+    const g = guides[`${pf.id}:${s.name}`] ?? fallbackGuide
   const [img, setImg] = useState(null)
   const [mode, setMode] = useState('fit')
   const [fill, setFill] = useState('blur')
@@ -158,7 +160,13 @@ export default function Editor({ target, onClose, onPro }) {
                 <button className="btn ai" onClick={onPro}><FaWandMagicSparkles /> AI fill <em>Pro</em></button>
               </>
             ) : (
-              <p className="hint">Free {pf.name} {s.name.toLowerCase()} resizer. Get exactly {s.w}×{s.h} px, ready to post. Your photo never leaves your device.</p>
+                            <>
+                <p className="hint">Free {pf.name} {s.name.toLowerCase()} resizer. Get exactly {s.w}×{s.h} px, ready to post. Your photo never leaves your device.</p>
+                <div className="ed-tips">
+                  <h4>Quick guide</h4>
+                  <ul>{g.tips.map((t) => <li key={t}>{t}</li>)}</ul>
+                </div>
+              </>
             )}
           </div>
         </div>

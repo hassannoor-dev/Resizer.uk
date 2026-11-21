@@ -1,8 +1,9 @@
-import { useRef, useState } from 'react'
-import { FaArrowLeft, FaArrowRight, FaUser, FaPlay, FaImage } from 'react-icons/fa6'
+import { useCallback, useRef, useState } from 'react'
+import { FaArrowLeft, FaArrowRight, FaUser, FaPlay, FaImage, FaBookOpen } from 'react-icons/fa6'
 import { platforms } from '../data/platforms'
 import { formatTweaks } from '../data/formatTweaks'
 import HeroBg from './HeroBg'
+import GuideDialog from './GuideDialog'
 
 // Which little picture hints at what this format is used for.
 const kindOf = (name) => {
@@ -61,6 +62,9 @@ export default function Formats({ active, setActive, onOpen, bgs, logos }) {
   const total = platforms.length
   const pf = platforms[active]
   const go = (step) => setActive((active + step + total) % total)
+    // TIP: which preset's guide is open (null = closed)
+  const [guide, setGuide] = useState(null)
+  const closeGuide = useCallback(() => setGuide(null), [])
     // TIP: swipe left/right on phones to change platform. Needs a clear sideways move, so normal page scrolling still works.
   const touch = useRef(null)
   const onTouchStart = (e) => {
@@ -88,22 +92,30 @@ export default function Formats({ active, setActive, onOpen, bgs, logos }) {
           <FaArrowLeft />
         </button>
         <div className="fmt-panels" key={pf.id}>
-          {pf.presets.map((s) => {
+                    {pf.presets.map((s) => {
             const kind = kindOf(s.name)
             return (
-              <button
-                key={s.name}
-                className={`fmt-tile glass k-${kind}`}
-                onClick={() => onOpen(pf, s)}
-                aria-label={`${pf.name} ${s.name}, ${s.w} by ${s.h}`}
-                style={sizeFor(pf, s)}
-              >
-                <Cue kind={kind} />
-                <span className="fmt-label">
-                  <b>{s.name}</b>
-                  <small>{s.w}×{s.h}</small>
-                </span>
-              </button>
+              // TIP: the wrapper holds the size and the position. The tile and the Guide button are siblings (a button can't sit inside a button).
+              <div key={s.name} className={`fmt-item k-${kind}`} style={sizeFor(pf, s)}>
+                <button
+                  className={`fmt-tile glass k-${kind}`}
+                  onClick={() => onOpen(pf, s)}
+                  aria-label={`${pf.name} ${s.name}, ${s.w} by ${s.h}`}
+                >
+                  <Cue kind={kind} />
+                  <span className="fmt-label">
+                    <b>{s.name}</b>
+                    <small>{s.w}×{s.h}</small>
+                  </span>
+                </button>
+                <button
+                  className="fmt-guide"
+                  onClick={() => setGuide({ s, kind })}
+                  aria-label={`${pf.name} ${s.name} guide`}
+                >
+                  <FaBookOpen aria-hidden="true" /> Guide
+                </button>
+              </div>
             )
           })}
         </div>
@@ -124,6 +136,20 @@ export default function Formats({ active, setActive, onOpen, bgs, logos }) {
           />
         ))}
       </div>
+
+            {guide && (
+        <GuideDialog
+          key={guide.s.name}
+          pf={pf}
+          s={guide.s}
+          kind={guide.kind}
+          onClose={closeGuide}
+          onUse={() => {
+            setGuide(null)
+            onOpen(pf, guide.s)
+          }}
+        />
+      )}
     </section>
   )
 }

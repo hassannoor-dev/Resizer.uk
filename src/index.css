@@ -194,7 +194,7 @@ h2 { font-size: clamp(40px, 6vw, 76px); }
 .footer a:hover, .footer nav button:hover { color: #fff; }
 .footer-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-top: 20px; font-size: 14px; color: rgba(255, 255, 255, 0.65); }
 
-@media (max-width: 700px) {
+@media (max-width: 900px) {
   .search { flex-direction: column; gap: 4px; }
   .field + .field { border-left: 0; border-top: 1px solid #e3e8f2; }
   .find { align-self: stretch; justify-content: center; margin-top: 4px; }
@@ -208,7 +208,7 @@ h2 { font-size: clamp(40px, 6vw, 76px); }
 
 
 /* ===== Hero on phones: calmer spacing, clear order, no cards ===== */
-@media (max-width: 600px) {
+@media (max-width: 900px) {
   .hero { padding: 40px 20px 32px; } /* TIP: the bottom padding is needed now that the cards are gone */
   .cards { display: none; }          /* TIP: delete this one line to bring the cards back */
 

@@ -114,7 +114,7 @@ img.fmt-logo { width: min(var(--logo-size), 24vw); }
 
 
 /* ===== Platform section on phones: labels no longer collide with the icons ===== */
-@media (max-width: 600px) {
+@media (max-width: 900px) {
   /* TIP: --u is the base tile size. This formula always fits 2 square tiles per row (88px on tiny phones up to 124px) */
   .fmt-panels { --u: clamp(88px, calc(50vw - 72px), 124px); gap: 14px 12px; }
 
@@ -136,7 +136,7 @@ img.fmt-logo { width: min(var(--logo-size), 24vw); }
 /* ===== Platform section on phones: per-platform controls ===== */
 .fmt-dots { display: none; } /* TIP: hidden on desktop, the arrows do the job there */
 
-@media (max-width: 600px) {
+@media (max-width: 900px) {
   /* ---------- DEFAULTS (every platform starts from these) ---------- */
   .fmt {
     --m-section: 680px;   /* TIP: total section height, SAME for all platforms so nothing jumps. Raise it if a tall platform (LinkedIn) grows or gets cut off. */
@@ -177,4 +177,20 @@ img.fmt-logo { width: min(var(--logo-size), 24vw); }
   .fmt-dots button { position: relative; width: 24px; height: 24px; } /* TIP: 24px = easy to tap, the visible dot is smaller (below) */
   .fmt-dots button::before { content: ''; position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; border-radius: 999px; background: #c3c8d2; transform: translate(-50%, -50%); transition: width 0.25s ease, background 0.25s ease; }
   .fmt-dots button.on::before { width: 22px; background: var(--c); }
+}
+
+/* ===== Guide badge: hangs off the top-right corner of every preset ===== */
+/* TIP: .fmt-item is the invisible wrapper that now holds each preset's size. The tile fills it. */
+.fmt-item { position: relative; max-width: 100%; transition: transform 0.2s ease; }
+.fmt-item:hover, .fmt-item:focus-within { transform: translateY(-5px); }
+.fmt-item > .fmt-tile { position: absolute; inset: 0; width: 100%; height: 100%; }
+.fmt-item > .fmt-tile:hover, .fmt-item > .fmt-tile:focus-visible { transform: none; } /* the wrapper does the lift now */
+
+/* TIP: top / right = how far the badge hangs over the corner. Use 8px / 8px to tuck it inside the tile. */
+.fmt-guide { position: absolute; top: -10px; right: -8px; z-index: 3; display: inline-flex; align-items: center; gap: 5px; padding: 5px 11px 5px 9px; border-radius: 999px; background: var(--navy); color: #fff; font-size: 12px; font-weight: 700; box-shadow: 0 6px 14px rgba(15, 27, 51, 0.3); transition: transform 0.2s ease, background 0.2s ease; }
+.fmt-guide svg { color: var(--yellow); }
+.fmt-guide:hover, .fmt-guide:focus-visible { background: var(--blue-deep); transform: scale(1.07); }
+
+@media (max-width: 600px) {
+  .fmt-guide { top: -9px; right: -6px; padding: 4px 9px 4px 7px; font-size: 11px; }
 }
