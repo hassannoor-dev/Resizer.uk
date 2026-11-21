@@ -1,0 +1,13 @@
+{
+  // TIP: this MUST match your Worker's name in the Cloudflare dashboard (Workers & Pages list). Copy it exactly.
+  "name": "YOUR-WORKER-NAME",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-11-21",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application",
+    "binding": "ASSETS",
+    // TIP: only /api/ requests go to the script first; everything else is served as files
+    "run_worker_first": ["/api/*"]
+  }
+}

@@ -1,5 +1,21 @@
-// TIP: runs on Cloudflare, not in the browser. The secret key comes from environment variables (step 4).
-export async function onRequestPost({ request, env }) {
+// TIP: runs on Cloudflare, not in the browser. The secret key comes from environment variables, never from your code.
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url)
+
+    if (url.pathname === '/api/waitlist') {
+      if (request.method !== 'POST') {
+        return new Response('Method not allowed', { status: 405, headers: { Allow: 'POST' } })
+      }
+      return joinWaitlist(request, env)
+    }
+
+    // TIP: everything else (your pages, images, CSS) is served as normal
+    return env.ASSETS.fetch(request)
+  },
+}
+
+async function joinWaitlist(request, env) {
   const reply = (body, status = 200) =>
     new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } })
 
