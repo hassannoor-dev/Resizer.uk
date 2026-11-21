@@ -51,5 +51,5 @@ async function joinWaitlist(request, env) {
   if (res.ok || res.status === 409) return reply({ ok: true })
 
   // TIP: temporary debugging. Supabase's own error message. Delete the status/detail part once it works.
-  return reply({ error: 'failed', status: res.status, detail: (await res.text()).slice(0, 300) }, 502)
+  return reply({ error: 'failed' }, 502)
 }
