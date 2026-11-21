@@ -31,13 +31,25 @@ async function joinWaitlist(request, env) {
     return reply({ error: 'invalid email' }, 400)
   }
 
-  const res = await fetch(`${env.SUPABASE_URL}/rest/v1/waitlist`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', apikey: env.SUPABASE_SECRET_KEY, Prefer: 'return=minimal' },
-    body: JSON.stringify({ email }),
-  })
+  // TIP: temporary debugging. Says whether the two settings reached the Worker (true/false only, never the values).
+  if (!env.SUPABASE_URL || !env.SUPABASE_SECRET_KEY) {
+    return reply({ error: 'missing settings', hasUrl: Boolean(env.SUPABASE_URL), hasKey: Boolean(env.SUPABASE_SECRET_KEY) }, 500)
+  }
+
+  let res
+  try {
+    res = await fetch(`${env.SUPABASE_URL}/rest/v1/waitlist`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', apikey: env.SUPABASE_SECRET_KEY, Prefer: 'return=minimal' },
+      body: JSON.stringify({ email }),
+    })
+  } catch (e) {
+    return reply({ error: 'could not reach supabase', detail: String(e).slice(0, 200) }, 502)
+  }
 
   // TIP: 409 means this email is already on the list, which counts as success
   if (res.ok || res.status === 409) return reply({ ok: true })
-  return reply({ error: 'failed' }, 502)
+
+  // TIP: temporary debugging. Supabase's own error message. Delete the status/detail part once it works.
+  return reply({ error: 'failed', status: res.status, detail: (await res.text()).slice(0, 300) }, 502)
 }
