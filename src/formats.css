@@ -1,0 +1,180 @@
+/* Platform section: a picture background with glass panels shaped like each format. */
+.fmt {
+  --c: #1d4ed8;
+  position: relative;
+  overflow: hidden;
+  margin: 16px;
+  padding: 150px 80px 64px;
+  border-radius: 32px;
+  /* Shows until the background picture loads. */
+  background: linear-gradient(135deg, color-mix(in srgb, var(--c) 75%, #fff), color-mix(in srgb, var(--c) 25%, #d6e6ff));
+}
+.fmt > :not(.fmt-bg) { position: relative; z-index: 1; }
+.fmt-bg { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; pointer-events: none; animation: bgfade 0.5s ease; }
+@keyframes bgfade { from { opacity: 0; } }
+.fmt h2 { color: var(--navy); }
+.fmt.light h2 { color: #fff; text-shadow: 0 2px 16px rgba(0, 0, 0, 0.25); }
+
+.fmt-head { display: flex; justify-content: flex-start; align-items: flex-start; margin-bottom: 28px; }
+
+/* Glass */
+.glass {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.05)), rgba(40, 50, 70, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  box-shadow: 0 12px 32px rgba(15, 27, 51, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  backdrop-filter: blur(16px) saturate(1.3);
+}
+.fmt-badge, .fmt-arrow {
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0.07) 55%, rgba(255, 255, 255, 0.22));
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  -webkit-backdrop-filter: blur(22px) saturate(1.8) brightness(1.08);
+  backdrop-filter: blur(22px) saturate(1.8) brightness(1.08);
+  box-shadow: 0 14px 34px rgba(15, 27, 51, 0.22), inset 0 1.5px 1px rgba(255, 255, 255, 0.95), inset 0 -10px 18px rgba(255, 255, 255, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+}
+/* A soft shine across the top half, like light on glass. */
+.fmt-badge::before, .fmt-arrow::before { content: ''; position: absolute; left: 6%; right: 6%; top: 3%; height: 46%; z-index: -1; border-radius: inherit; background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0)); pointer-events: none; }
+.fmt-badge svg, .fmt-badge img { filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25)); }
+.fmt-badge { display: grid; place-items: center; width: clamp(64px, 8vw, 92px); aspect-ratio: 1; border-radius: 26px; color: var(--c); font-size: clamp(30px, 4vw, 46px); }
+
+/* Stage: panels in the middle, arrows centered on the panels */
+.fmt-stage { position: relative; }
+.fmt-panels {
+  --u: clamp(112px, 15vw, 200px);
+  display: flex; flex-wrap: wrap; align-items: center; align-content: center; justify-content: center; gap: 22px;
+  min-height: 330px;
+  animation: swap 0.3s ease;
+}
+.fmt-arrow {
+  position: absolute; top: 50%; z-index: 2; transform: translateY(-50%);
+  display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%;
+  color: var(--navy); transition: background 0.2s, color 0.2s;
+}
+.fmt-arrow:hover { background: linear-gradient(145deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.35)); color: var(--blue-deep); }
+.fmt-arrow.prev { left: -68px; }
+.fmt-arrow.next { right: -68px; }
+
+/* Each panel has the real shape of its format */
+.fmt-tile {
+  position: relative; overflow: hidden; max-width: 100%;
+  border-radius: clamp(14px, 1.6vw, 22px);
+  color: #fff; transition: transform 0.2s ease;
+}
+.fmt-tile:hover, .fmt-tile:focus-visible { transform: translateY(-5px); }
+.fmt-label { position: absolute; left: 12px; right: 12px; bottom: 10px; display: grid; gap: 1px; text-align: left; text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45); }
+.fmt-label b { font-size: 14px; }
+.fmt-label small { font-size: 12px; opacity: 0.85; }
+.k-banner .fmt-label { left: auto; text-align: right; }
+
+.cue { position: absolute; color: rgba(255, 255, 255, 0.85); }
+.cue-avatar { top: 9%; left: 50%; transform: translateX(-50%); width: 60%; aspect-ratio: 1; display: grid; place-items: center; border: 2px solid rgba(255, 255, 255, 0.65); border-radius: 50%; font-size: calc(var(--u) * 0.26); }
+.cue-banner { left: 5%; bottom: -32%; height: 70%; aspect-ratio: 1; border: 2px solid rgba(255, 255, 255, 0.65); border-radius: 50%; background: rgba(255, 255, 255, 0.16); }
+.cue-play { top: 42%; left: 50%; transform: translate(-50%, -50%); display: grid; place-items: center; width: calc(var(--u) * 0.3); aspect-ratio: 1; border: 2px solid rgba(255, 255, 255, 0.7); border-radius: 50%; background: rgba(255, 255, 255, 0.2); font-size: calc(var(--u) * 0.11); }
+.cue-time { right: 10px; bottom: 10px; padding: 1px 6px; border-radius: 6px; background: rgba(0, 0, 0, 0.45); color: #fff; font-size: 11px; }
+.cue-bars { left: 9%; right: 9%; top: 12px; display: flex; gap: 4px; }
+.cue-bars i { flex: 1; height: 3px; border-radius: 2px; background: rgba(255, 255, 255, 0.45); }
+.cue-bars i:first-child { background: rgba(255, 255, 255, 0.9); }
+.cue-post { inset: 0 0 24% 0; display: grid; place-items: center; font-size: calc(var(--u) * 0.3); opacity: 0.7; }
+
+@media (max-width: 820px) {
+  .fmt { margin: 8px; padding: 110px 56px 48px; border-radius: 28px; }
+  .fmt-arrow { width: 42px; height: 42px; }
+  .fmt-arrow.prev { left: -50px; }
+  .fmt-arrow.next { right: -50px; }
+}
+
+/* The platform logo: free-floating, placed by the x/y/size settings (see the Tune images panel). */
+.fmt > .fmt-logo { position: absolute; z-index: 2; height: auto; pointer-events: none; filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.25)); }
+img.fmt-logo { width: min(var(--logo-size), 24vw); }
+.fmt-logo-icon { display: block; line-height: 1; font-size: min(var(--logo-size), 24vw); color: var(--c); }
+
+/* Clean panels: almost solid white so they read clearly on any background. */
+.fmt-tile.glass {
+  background: linear-gradient(180deg, #ffffff, #f2f3f5);
+  border: 1px solid rgba(15, 27, 51, 0.07);
+  box-shadow: 0 14px 34px rgba(15, 27, 51, 0.16), 0 2px 6px rgba(15, 27, 51, 0.08), inset 0 1px 0 #fff, inset 0 -2px 6px rgba(15, 27, 51, 0.04);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  color: #5c606a;
+}
+.fmt-tile:hover, .fmt-tile:focus-visible { box-shadow: 0 20px 40px rgba(15, 27, 51, 0.2), 0 2px 6px rgba(15, 27, 51, 0.08), inset 0 1px 0 #fff; }
+.fmt-label { text-shadow: none; }
+.fmt-label b { color: #2b2e35; }
+.fmt-label small { color: #7b808a; opacity: 1; }
+.cue { color: #5c606a; }
+.cue-avatar { border-color: #5c606a; }
+.cue-banner { border-color: #5c606a; background: rgba(92, 96, 106, 0.12); }
+.cue-play { border: 0; background: #5c606a; color: #fff; }
+.cue-time { background: #5c606a; color: #fff; }
+.cue-bars i { background: #d3d6dc; }
+.cue-bars i:first-child { background: #5c606a; }
+.cue-post { opacity: 1; }
+
+
+/* ===== Platform section on phones: labels no longer collide with the icons ===== */
+@media (max-width: 600px) {
+  /* TIP: --u is the base tile size. This formula always fits 2 square tiles per row (88px on tiny phones up to 124px) */
+  .fmt-panels { --u: clamp(88px, calc(50vw - 72px), 124px); gap: 14px 12px; }
+
+  /* TIP: --lab = height kept free for the label at the bottom of each tile. Icons only use the space above it. */
+  .fmt-tile { --lab: 38px; }
+  .fmt-tile.k-avatar { --lab: 54px; } /* "Profile picture" wraps onto 2 lines, so it needs more room */
+
+  .fmt-label { left: 10px; right: 10px; bottom: 9px; }
+  .fmt-label b { font-size: 12px; line-height: 1.2; }
+  .fmt-label small { font-size: 11px; }
+
+  /* Icons: smaller, and kept above the label band */
+  .cue-avatar { top: 8px; width: calc(100% - var(--lab) - 16px); font-size: calc(var(--u) * 0.2); }
+  .cue-play { top: calc((100% - var(--lab)) / 2); width: calc(var(--u) * 0.24); font-size: calc(var(--u) * 0.09); }
+  .cue-time { right: 8px; bottom: 8px; font-size: 10px; }
+  .cue-post { inset: 0 0 var(--lab) 0; font-size: calc(var(--u) * 0.22); }
+}
+
+/* ===== Platform section on phones: per-platform controls ===== */
+.fmt-dots { display: none; } /* TIP: hidden on desktop, the arrows do the job there */
+
+@media (max-width: 600px) {
+  /* ---------- DEFAULTS (every platform starts from these) ---------- */
+  .fmt {
+    --m-section: 680px;   /* TIP: total section height, SAME for all platforms so nothing jumps. Raise it if a tall platform (LinkedIn) grows or gets cut off. */
+    --m-top: 112px;       /* TIP: space above the tiles = how close they sit to the logo. Lower = closer. */
+    --m-size: 36px;       /* TIP: tile size. LOWER = bigger tiles, HIGHER = smaller tiles. */
+    --m-max: 160px;       /* TIP: the biggest the tiles can ever get on wide phones */
+    --m-logo-x: 50%;      /* TIP: logo left/right. 50% = centered (keep --m-logo-shift at -50%) */
+    --m-logo-shift: -50%; /* TIP: use 0 instead if you set --m-logo-x to the left side, like 6% */
+    --m-logo-y: 14px;     /* TIP: logo up/down */
+    /* --m-logo-w: 100px; */ /* TIP: remove the comment marks to set the logo width for a platform (see below) */
+  }
+
+  /* ---------- PER-PLATFORM CONTROLS: edit these five blocks ---------- */
+  .fmt[data-pf='linkedin']  { --m-top: 128px; --m-size: 36px; --m-logo-x: 20%; --m-logo-y: 14px; }
+  .fmt[data-pf='facebook']  { --m-top: 112px; --m-size: 36px; --m-logo-x: 20%; --m-logo-y: 14px; }
+  .fmt[data-pf='youtube']   { --m-top: 112px; --m-size: 36px; --m-logo-x: 20%; --m-logo-y: 14px; }
+  .fmt[data-pf='instagram'] { --m-top: 128px; --m-size: 36px; --m-logo-x: 20%; --m-logo-y: 14px; }
+  .fmt[data-pf='x']         { --m-top: 112px; --m-size: 36px; --m-logo-x: 20%; --m-logo-y: 14px; }
+  /* TIP: add any variable from the defaults to a block to change just that platform, e.g.
+     .fmt[data-pf='x'] { --m-size: 28px; --m-top: 100px; --m-logo-w: 90px; } */
+  /* TIP: LinkedIn on phones: the two square tiles (Profile picture + Company logo) share the first row, then the banner, then the post.
+     order: 1 = first, 2 = second, 3 = third. Swap the numbers to change the row order. Phone only, desktop keeps its normal order. */
+  .fmt[data-pf='linkedin'] .k-avatar { order: 1; }
+  .fmt[data-pf='linkedin'] .k-banner { order: 2; }
+  .fmt[data-pf='linkedin'] .k-post   { order: 3; }
+  /* ---------- the machinery (you shouldn't need to touch below) ---------- */
+  .fmt { display: flex; flex-direction: column; min-height: var(--m-section); padding: var(--m-top) 16px 28px; }
+  .fmt-arrow { display: none; }
+  .fmt-stage { touch-action: pan-y; } /* TIP: lets the page scroll up/down while we handle left/right swipes */
+  .fmt-panels { --u: clamp(100px, calc(50vw - var(--m-size)), var(--m-max)); min-height: 0; align-content: flex-start; }
+
+  /* Logo. !important because its position and size are set inline from images.js. 'translate' (not 'transform') keeps your tilt. */
+  .fmt > .fmt-logo { left: var(--m-logo-x) !important; top: var(--m-logo-y) !important; translate: var(--m-logo-shift) 0; }
+  img.fmt-logo { width: var(--m-logo-w, min(var(--logo-size), 24vw)) !important; }
+
+  /* Dots: pinned to the bottom of the section; the active one stretches into a pill in the platform's colour */
+  .fmt-dots { display: flex; justify-content: center; gap: 2px; width: fit-content; margin: auto auto 0; padding: 4px 8px; border-radius: 999px; background: rgba(255, 255, 255, 0.85); box-shadow: 0 6px 18px rgba(15, 27, 51, 0.15); }
+  .fmt-dots button { position: relative; width: 24px; height: 24px; } /* TIP: 24px = easy to tap, the visible dot is smaller (below) */
+  .fmt-dots button::before { content: ''; position: absolute; top: 50%; left: 50%; width: 8px; height: 8px; border-radius: 999px; background: #c3c8d2; transform: translate(-50%, -50%); transition: width 0.25s ease, background 0.25s ease; }
+  .fmt-dots button.on::before { width: 22px; background: var(--c); }
+}

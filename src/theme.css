@@ -1,0 +1,48 @@
+/* Brand colours taken from the logo. Loaded last so it overrides the earlier blue. */
+:root { --blue: #60b0f0; --blue-deep: #3f84cc; }
+:focus-visible { outline-color: var(--blue-deep); }
+
+/* Buttons: logo blue with dark text (white on this light blue is too faint to read). */
+.cta, .find {
+  background: linear-gradient(180deg, #2a5bea, #1740b8);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(29, 78, 216, 0.3);
+}
+.cta i, .find i { color: #1d4ed8; }
+
+.btn.ghost { background: #fff; color: var(--navy); box-shadow: none; }
+.btn.ai { background: var(--yellow); color: var(--navy); box-shadow: none; }
+.cta i, .find i { color: var(--blue-deep); }
+
+.btn {
+  background: linear-gradient(180deg, #2a5bea, #1740b8);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(29, 78, 216, 0.3);
+}
+
+/* Text and small icons use the deeper logo blue so they stay readable on white. */
+.back, .legal a, .menu, .checks svg, .field:focus-within label { color: var(--blue-deep); }
+.seg button[aria-pressed='true'] { border-color: var(--blue); color: var(--blue-deep); }
+.drop:focus-within, .btn:focus-within { outline-color: var(--blue-deep); }
+.logo-word { color: var(--blue); }
+
+.search { box-shadow: 0 14px 36px rgba(96, 176, 240, 0.28); }
+.pro { background: linear-gradient(135deg, var(--blue-deep), #0f1b33); }
+.footer { background: radial-gradient(ellipse at 50% 130%, var(--blue-deep) 0, transparent 60%), #070d1c; }
+
+/* Cards that use a picture: the picture has its own outline, so no extra border or background. */
+.card.has-pic { border: 0; border-radius: 0; background: transparent; box-shadow: none; overflow: visible; }
+.card.has-pic .card-img { filter: drop-shadow(0 14px 18px rgba(15, 27, 51, 0.25)); }
+
+/* The search results must sit above the cards. */
+.hero-main { z-index: 20; }
+
+.checks svg { color: #1d4ed8; }
+.field:focus-within label { color: #1d4ed8; }
+.search { box-shadow: 0 14px 36px rgba(29, 78, 216, 0.18); }
+
+/* Editor popup only: old blue is back. The rest of the site keeps the new logo blue. */
+.ed-backdrop {
+  --blue: #1d4ed8;      /* TIP: the old blue. Change this one value to retune the popup */
+  --blue-deep: #1d4ed8; /* TIP: theme.css used the deeper blue for text and outlines, so it gets the old blue too */
+}

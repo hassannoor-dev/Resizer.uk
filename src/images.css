@@ -1,0 +1,14 @@
+/* Hero: the picture is an <img> (see src/data/images.js); these gradients show until it loads. */
+.hero {
+  background:
+    radial-gradient(ellipse 40% 30% at 18% 14%, rgba(255, 255, 255, 0.95), transparent 70%),
+    radial-gradient(ellipse 35% 25% at 85% 22%, rgba(255, 255, 255, 0.8), transparent 70%),
+    radial-gradient(ellipse 45% 20% at 60% 68%, rgba(255, 255, 255, 0.55), transparent 70%),
+    linear-gradient(180deg, #86bdf2 0%, #bfe0f9 55%, #e6f3fd 100%);
+}
+.hero-bg { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; pointer-events: none; }
+.hero-main, .cards { position: relative; z-index: 1; }
+
+.card { overflow: hidden; }
+.card-img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.card-img ~ .idx { z-index: 1; color: #fff; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6); }

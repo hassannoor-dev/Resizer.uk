@@ -1,0 +1,2 @@
+/* Custom icons take the same size as the default logos (1em). */
+.picon { display: block; width: 1em; height: 1em; object-fit: contain; }

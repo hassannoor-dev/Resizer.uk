@@ -1,0 +1,90 @@
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+.ed-backdrop { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 16px; background: rgba(7, 13, 28, 0.6); backdrop-filter: blur(4px); overflow: auto; }
+.ed { position: relative; width: min(1040px, 100%); max-height: 100%; overflow: auto; display: grid; gap: 20px; padding: 28px; border-radius: 28px; background: var(--cream); }
+.ed-close { position: absolute; top: 16px; right: 16px; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: #fff; }
+.ed-head { display: flex; align-items: center; gap: 14px; font-size: 32px; }
+.ed-head h3 { font-size: 20px; }
+.ed-head p { font-size: 14px; color: var(--muted); }
+.ed-body { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 20px; }
+.ed-stage { display: grid; place-items: center; min-height: 320px; padding: 16px; border-radius: 20px; background: #fff; }
+.ed-stage canvas { max-width: 100%; max-height: 60vh; border-radius: 8px; box-shadow: 0 8px 24px rgba(15, 27, 51, 0.2); cursor: grab; touch-action: none; }
+.drop { display: grid; gap: 6px; place-items: center; width: 100%; min-height: 300px; border: 2px dashed #b9c6e6; border-radius: 16px; color: var(--muted); text-align: center; cursor: pointer; }
+.drop svg { font-size: 36px; color: var(--blue); }
+.drop strong { color: var(--navy); }
+.drop:focus-within, .btn:focus-within { outline: 3px solid var(--blue); outline-offset: 3px; }
+
+.ed-controls { display: grid; align-content: start; gap: 16px; }
+.ctl { display: grid; gap: 8px; }
+.ctl h4 { font-size: 13px; color: var(--muted); }
+.ctl input[type='range'] { accent-color: var(--blue); }
+.ctl input[type='color'] { width: 100%; height: 40px; border: 0; border-radius: 10px; background: none; }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg button { padding: 8px 12px; border: 2px solid transparent; border-radius: 12px; background: #fff; font-weight: 500; }
+.seg button[aria-pressed='true'] { border-color: var(--blue); color: var(--blue); font-weight: 700; }
+.hint { font-size: 14px; color: var(--muted); }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 18px; border-radius: 14px; background: var(--blue); color: #fff; font-weight: 700; cursor: pointer; }
+.btn.ghost { background: #fff; color: var(--navy); }
+.btn.ai { background: var(--yellow); color: var(--navy); }
+.btn.ai em { padding: 2px 8px; border-radius: 999px; background: var(--navy); color: var(--yellow); font-size: 12px; font-style: normal; }
+.btn:disabled { opacity: 0.6; cursor: default; }
+
+.pro { margin: 16px; padding: 64px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center; border-radius: 32px; color: #fff; background: linear-gradient(135deg, #1d4ed8, #0f1b33); }
+.pro p { margin-top: 16px; max-width: 46ch; color: rgba(255, 255, 255, 0.75); }
+.pro form { display: grid; gap: 12px; }
+.pro input { padding: 16px 18px; border: 0; border-radius: 14px; font: inherit; }
+.pro .note { margin: 0; min-height: 1.4em; font-size: 14px; }
+
+@media (max-width: 800px) {
+  .ed-body, .pro { grid-template-columns: 1fr; }
+  .pro { padding: 40px 28px; }
+  .ed { padding: 20px; }
+}
+
+/* ===== Editor popup on phones: full-screen sheet, preview pinned, controls scroll underneath ===== */
+@media (max-width: 600px) {
+  /* 1. Popup fills the screen. TIP: change border-radius to 0 for a fully square sheet. */
+  .ed-backdrop { padding: 0; place-items: stretch; overflow: hidden; }
+  .ed {
+    width: 100%; height: 100vh; height: 100dvh; max-height: none;
+    padding: 12px 14px 0; gap: 10px; border-radius: 0;
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+
+  /* 2. Slim header */
+  .ed-head { flex: none; gap: 10px; padding-right: 48px; font-size: 24px; }
+  .ed-head h3 { font-size: 16px; }
+  .ed-head p { font-size: 13px; }
+  .ed-close { top: 10px; right: 10px; width: 36px; height: 36px; }
+
+  /* 3. Body: preview on top (never scrolls away), controls scroll below it */
+  .ed-body { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; }
+
+  /* TIP: preview height = 38% of the screen. Raise 38dvh for a bigger preview, lower it for more room for controls.
+     Keep the canvas max-height equal to this number minus 20px. */
+  .ed-stage { flex: none; height: 38vh; height: 38dvh; min-height: 0; padding: 10px; border-radius: 16px; }
+  .ed-stage canvas { max-height: calc(38dvh - 20px); max-width: 100%; }
+  .drop { min-height: 0; height: 100%; }
+
+  /* 4. Controls: the only scrolling part */
+  .ed-controls { flex: 1; min-height: 0; overflow-y: auto; align-content: start; gap: 14px; padding-bottom: 8px; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+  .ed-controls .zoom { order: -1; } /* TIP: Zoom sits straight under the preview. Change -1 to 0 to put it back in its normal place. */
+
+  /* Zoom slider: bigger and easier to grab with a thumb */
+  .ctl input[type='range'] { width: 100%; height: 32px; }
+  .ctl h4 { font-size: 13px; }
+
+  /* Smaller option buttons so more fit on screen */
+  .seg { gap: 6px; }
+  .seg button { padding: 8px 12px; font-size: 14px; }
+
+  /* 5. Buttons: Download stays pinned at the bottom while you scroll the options.
+        It is the only button that is a <button class="btn"> without .ai, so this targets it. */
+  .ed-controls > button.btn:not(.ai) {
+    position: sticky; bottom: 0; z-index: 2; order: 10;
+    padding: 14px 18px; box-shadow: 0 -10px 16px var(--cream), 0 6px 16px rgba(29, 78, 216, 0.3);
+  }
+  .ed-controls .hint { order: 9; }
+  .ed-controls .btn.ghost, .ed-controls .btn.ai { order: 11; padding: 12px 16px; }
+}

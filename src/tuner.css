@@ -1,0 +1,8 @@
+.tuner { position: fixed; left: 16px; bottom: 16px; z-index: 60; font-size: 13px; }
+.tuner-toggle { padding: 10px 14px; border-radius: 12px; background: var(--navy); color: #fff; font-weight: 700; box-shadow: 0 8px 22px rgba(15, 27, 51, 0.3); }
+.tuner-panel { display: grid; gap: 10px; width: 280px; margin-bottom: 8px; padding: 14px; background: #fff; border-radius: 16px; box-shadow: 0 16px 40px rgba(15, 27, 51, 0.25); }
+.tuner-panel label { display: grid; gap: 4px; font-weight: 600; }
+.tuner-panel select { padding: 8px; border: 1px solid #d9e0ee; border-radius: 8px; font: inherit; }
+.tuner-panel input[type='range'] { accent-color: var(--blue); }
+.tuner-row { display: flex; justify-content: space-between; align-items: center; }
+.tuner-note { color: var(--muted); }
