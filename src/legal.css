@@ -6,3 +6,13 @@
 .legal a { color: var(--blue); }
 .back { display: inline-flex; align-items: center; gap: 8px; color: var(--blue); font-weight: 700; text-decoration: none; }
 .disclaimer { margin-top: 12px; font-size: 12px; color: rgba(255, 255, 255, 0.5); }
+
+/* TIP: numbered clauses with a hanging indent, like a contract. Change 3.6em to widen or narrow the number column. */
+.legal .cl { max-width: 72ch; margin-top: 12px; padding-left: 3.6em; text-indent: -3.6em; line-height: 1.7; color: #2b3a55; }
+.legal .cl-first { margin-top: 28px; }
+.legal .cl .no { display: inline-block; width: 3.6em; text-indent: 0; color: var(--navy); }
+.legal .cl .lead { color: var(--navy); }
+.legal .cl-list { max-width: 72ch; margin: 8px 0 0; padding: 0 0 0 6em; list-style: none; counter-reset: cl; line-height: 1.7; color: #2b3a55; }
+.legal .cl-list li { position: relative; counter-increment: cl; }
+.legal .cl-list li + li { margin-top: 6px; }
+.legal .cl-list li::before { content: '(' counter(cl, lower-alpha) ')'; position: absolute; left: -2.4em; }
