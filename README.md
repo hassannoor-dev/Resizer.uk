@@ -82,6 +82,6 @@ End-to-end tests with Playwright.
 A social share image, WebP export, HEIC support and more platforms.
 Credits and legal
 
-Built by Muhammad Hassan. GitHub: https://github.com/<your-username> · LinkedIn: https://www.linkedin.com/in/<your-handle> · Email: you@example.com
+
 
 LinkedIn, Facebook, YouTube, Instagram, X and other names are trademarks of their owners. Resizer is not affiliated with or endorsed by them.
